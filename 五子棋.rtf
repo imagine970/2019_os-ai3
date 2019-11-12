@@ -1,0 +1,262 @@
+{\rtf1\ansi\ansicpg936\deff0\nouicompat\deflang1033\deflangfe2052{\fonttbl{\f0\fnil\fcharset134 \'cb\'ce\'cc\'e5;}}
+{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang2052\'ce\'e5\'d7\'d3\'c6\'e5\par
+\'b4\'fa\'c2\'eb\'a3\'ba\par
+#define _CRT_SECURE_NO_WARNINGS 1\par
+\par
+#include <iostream>\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <time.h>\par
+#include <string.h>\par
+\par
+using namespace std;\par
+\par
+const int N = 15;       //15*15\'b5\'c4\'c6\'e5\'c5\'cc\par
+const char ChessBoard = ' ';  //\'c6\'e5\'c5\'cc\'b1\'ea\'d6\'be\par
+const char flag1 = 'o';    //\'cd\'e6\'bc\'d21\'bb\'f2\'b5\'e7\'c4\'d4\'b1\'ea\'d6\'be\par
+const char flag2 = 'x';    //\'cd\'e6\'bc\'d22\'b1\'ea\'d6\'be\par
+\par
+typedef struct Position\{    //\'d7\'f8\'b1\'ea\par
+    int row;        //\'d0\'d0\par
+    int col;        //\'c1\'d0\par
+\}Position;\par
+\par
+class GoBang\{     //\'ce\'e5\'d7\'d3\'c6\'e5\'c0\'e0\par
+public:\par
+    GoBang()\{\par
+        InitChessBoard();      //\'b3\'f5\'ca\'bc\'bb\'af\'c6\'e5\'c5\'cc\par
+    \}\par
+    void Play()\{      //\'cf\'c2\'c6\'e5\par
+        Position Play1;   //\'cd\'e6\'bc\'d21\'bb\'f2\'b5\'e7\'c4\'d4\par
+        Position Play2;   //\'cd\'e6\'bc\'d22\par
+        while (1)\{\par
+            int mode = ChoiceMode();\par
+            while (1)\{\par
+                if (mode == 1)\{       //\'b5\'e7\'c4\'d4VS\'cd\'e6\'bc\'d2\par
+                    ComputerChess(Play1, flag1);            //\'b5\'e7\'c4\'d4\'d7\'df\par
+                    if (GetVictory(Play1, 0, flag1))\{       //0\'b4\'fa\'b1\'ed\'b5\'e7\'c4\'d4\'a3\'ac\'ce\'aa\'d5\'e6\'d4\'f2\'b1\'ed\'ca\'be\'b5\'e7\'c4\'d4\'bb\'f1\'ca\'a4\par
+                        break;\par
+                    \}\par
+                    PlayChess(Play2, 2, flag2);         //\'cd\'e6\'bc\'d22\'d7\'df\par
+                    if (GetVictory(Play2, 2, flag2))\{       //2\'b4\'fa\'b1\'ed\'cd\'e6\'bc\'d22\par
+                        break;\par
+                    \}\par
+                \}\par
+                else\{               //\'cd\'e6\'bc\'d21VS\'cd\'e6\'bc\'d22\par
+                    PlayChess(Play1, 1, flag1);         //\'cd\'e6\'bc\'d21\'d7\'df\par
+                    if (GetVictory(Play1, 1, flag1))\{       //\'cd\'e6\'bc\'d21\'d3\'ae\par
+                        break;\par
+                    \}\par
+                    PlayChess(Play2, 2, flag2);         //\'cd\'e6\'bc\'d22\'d7\'df\par
+                    if (GetVictory(Play2, 2, flag2))\{       //\'cd\'e6\'bc\'d22\'d3\'ae\par
+                        break;\par
+                    \}\par
+                \}\par
+            \}\par
+            cout << "======\'d4\'d9\'c0\'b4\'d2\'bb\'be\'d6=======" << endl;\par
+            cout << "yes or no :";  \par
+            char s[] = "yes";\par
+            cin >> s;\par
+            if (strcmp(s, "no") == 0)\{\par
+                break;\par
+            \}\par
+        \}\par
+    \}\par
+\par
+protected:\par
+    void InitChessBoard()\{          //\'b3\'f5\'ca\'bc\'bb\'af\'c6\'e5\'c5\'cc\par
+        for (int i = 0; i < N + 1; ++i)\{\par
+            for (int j = 0; j < N + 1; ++j)\{\par
+                _ChessBoard[i][j] = ChessBoard;\par
+            \}\par
+        \}\par
+    \}\par
+\par
+    int ChoiceMode()\{           //\'d1\'a1\'d4\'f1\'c4\'a3\'ca\'bd\par
+        system("cls");\par
+        //\'cf\'b5\'cd\'b3\'b5\'f7\'d3\'c3\'a3\'ac\'c7\'e5\'c6\'c1\par
+        InitChessBoard();       //\'d6\'d8\'d0\'c2\'b3\'f5\'ca\'bc\'bb\'af\'c6\'e5\'c5\'cc\par
+        cout << "*************************************************" << endl;\par
+        cout << "******************0\'a1\'a2\'cd\'cb\'b3\'f6************************" << endl;\par
+        cout << "******************1\'a1\'a2\'b5\'e7\'c4\'d4VS\'cd\'e6\'bc\'d2******************" << endl;\par
+        cout << "******************2\'a1\'a2\'cd\'e6\'bc\'d2VS\'cd\'e6\'bc\'d2******************" << endl;\par
+        cout << "*************************************************" << endl;\par
+        while (1)\{\par
+            int i = 0;\par
+            cout << "\'c7\'eb\'d1\'a1\'d4\'f1\'c4\'a3\'ca\'bd\'a3\'ba";\par
+            cin >> i;\par
+            if (i == 0)\{       //\'cd\'cb\'b3\'f6\par
+                exit(1);\par
+            \}\par
+            if (i == 1 || i == 2)\{\par
+                return i;\par
+            \}\par
+            else\{\par
+                cout << "\'b7\'c7\'b7\'a8\'ca\'e4\'c8\'eb\'a3\'ac\'c7\'eb\'d6\'d8\'d0\'c2\'ca\'e4\'c8\'eb\'a3\'a1" << endl;\par
+            \}\par
+        \}\par
+    \}\par
+\par
+    void PrintChessBoard()\{        //\'b4\'f2\'d3\'a1\'c6\'e5\'c5\'cc\par
+        printf("     1   2   3   4   5   6   7   8   9  10  11  12  13  14  15\\n");\par
+        printf("   |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\\n");\par
+        for (int i = 1; i < N + 1; ++i)\par
+        \{\par
+            printf("%2d ", i);\par
+            printf("| %c | %c | %c | %c | %c | %c | %c | %c | %c | %c | %c | %c | %c | %c | %c |\\n", _ChessBoard[i][1], _ChessBoard[i][2], _ChessBoard[i][3], _ChessBoard[i][4], _ChessBoard[i][5], _ChessBoard[i][6], _ChessBoard[i][7], _ChessBoard[i][8], _ChessBoard[i][9], _ChessBoard[i][10], _ChessBoard[i][11], _ChessBoard[i][12], _ChessBoard[i][13], _ChessBoard[i][14], _ChessBoard[i][15]);\par
+            printf("   |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\\n");\par
+        \}\par
+        cout << endl;\par
+    \}\par
+\par
+    void ComputerChess(Position& pos, char flag)\{     //\'b5\'e7\'c4\'d4\'d7\'df\par
+        //PrintChessBoard();      //\'b4\'f2\'d3\'a1\'c6\'e5\'c5\'cc\par
+        int x = 0;\par
+        int y = 0;\par
+        while (1)\{                    //\'d1\'ad\'bb\'b7\'b2\'e9\'d5\'d2\'bf\'d5\'ce\'bb\'d6\'c3\par
+            x = (rand() % N) + 1;      //\'b2\'fa\'c9\'fa\'b4\'d31~N\'b5\'c4\'cb\'e6\'bb\'fa\'ca\'fd\par
+            srand((unsigned int)time(NULL));\par
+            y = (rand() % N) + 1;      //\'b2\'fa\'c9\'fa\'b4\'d31~N\'b5\'c4\'cb\'e6\'bb\'fa\'ca\'fd\par
+            srand((unsigned int)time(NULL));\par
+            if (_ChessBoard[x][y] == ChessBoard)\{       //\'c8\'e7\'b9\'fb\'d5\'e2\'b8\'f6\'ce\'bb\'d6\'c3\'ce\'aa\'bf\'d5\'a3\'a8\'c3\'bb\'d3\'d0\'c6\'e5\'d7\'d3\'a3\'a9\'a3\'ac\'cc\'f8\'b3\'f6\'d1\'ad\'bb\'b7\'a3\'ac\'cf\'c2\'c6\'e5\par
+                break;\par
+            \}\par
+        \}\par
+        pos.row = x;\par
+        pos.col = y;\par
+        _ChessBoard[pos.row][pos.col] = flag;\par
+    \}\par
+\par
+    void PlayChess(Position& pos, int player, char flag)\{\par
+        PrintChessBoard();      //\'b4\'f2\'d3\'a1\'c6\'e5\'c5\'cc\par
+        while (1)\{\par
+            printf("\'c7\'eb\'cd\'e6\'bc\'d2%d\'ca\'e4\'c8\'eb\'d7\'f8\'b1\'ea\'a3\'ba", player);\par
+            cin >> pos.row >> pos.col;\par
+            if (JudgeValue(pos) == 1)\{        //\'c5\'d0\'b6\'cf\'d7\'f8\'b1\'ea\'ca\'c7\'b7\'f1\'ba\'cf\'b7\'a8\par
+                break;\par
+            \}\par
+            cout << "\'d7\'f8\'b1\'ea\'b2\'bb\'ba\'cf\'b7\'a8\'a3\'ac\'c7\'eb\'d6\'d8\'d0\'c2\'ca\'e4\'c8\'eb\'a3\'ba" << endl;\par
+        \}\par
+        _ChessBoard[pos.row][pos.col] = flag;\par
+    \}\par
+\par
+    int JudgeValue(const Position& pos)\{       //\'c5\'d0\'b6\'cf\'d7\'f8\'b1\'ea\'b5\'c4\'ba\'cf\'b7\'a8\'d0\'d4\par
+        //1.\'d4\'da\'c6\'e5\'c5\'cc\'c9\'cf\par
+        if (pos.row > 0 && pos.row <= N && pos.col > 0 && pos.col <= N)\{\par
+            //2.\'cb\'f9\'d4\'da\'ce\'bb\'d6\'c3\'ce\'aa\'bf\'d5\'a3\'a8\'c3\'bb\'d3\'d0\'c6\'e5\'d7\'d3\'a3\'a9\par
+            if (_ChessBoard[pos.row][pos.col] == ChessBoard)\{\par
+                return 1;      //\'ba\'cf\'b7\'a8\par
+            \} \par
+        \}\par
+        return 0;       //\'b7\'c7\'b7\'a8\par
+    \}\par
+\par
+    int JudgeVictory(Position pos, char flag)\{     //\'c5\'d0\'b6\'cf\'ca\'c7\'b7\'f1\'d3\'d0\'cd\'e6\'bc\'d2\'bb\'f1\'ca\'a4\'a3\'a8\'b5\'d7\'b2\'e3\'c5\'d0\'b6\'cf\'a3\'a9\par
+        int begin = 0;\par
+        int end = 0;\par
+\par
+        //1.\'c5\'d0\'b6\'cf\'d0\'d0\'ca\'c7\'b7\'f1\'c2\'fa\'d7\'e3\'cc\'f5\'bc\'fe\par
+        (pos.col - 4) > 0 ? begin = (pos.col - 4) : begin = 1;\par
+        (pos.col + 4) > N ? end = N : end = (pos.col + 4);\par
+        for (int i = pos.row, j = begin; j + 4 <= end; ++j)\{\par
+            if (_ChessBoard[i][j] == flag && _ChessBoard[i][j + 1] == flag &&\par
+                _ChessBoard[i][j + 2] == flag && _ChessBoard[i][j + 3] == flag &&\par
+                _ChessBoard[i][j + 4] == flag)\par
+                return 1;\par
+        \}\par
+        //2.\'c5\'d0\'b6\'cf\'c1\'d0\'ca\'c7\'b7\'f1\'c2\'fa\'d7\'e3\'cc\'f5\'bc\'fe\par
+        (pos.row - 4) > 0 ? begin = (pos.row - 4) : begin = 1;\par
+        (pos.row + 4) > N ? end = N : end = (pos.row + 4);\par
+        for (int j = pos.col, i = begin ; i + 4 <= end; ++i)\{\par
+            if (_ChessBoard[i][j] == flag && _ChessBoard[i + 1][j] == flag &&\par
+                _ChessBoard[i + 2][j] == flag && _ChessBoard[i + 3][j] == flag &&\par
+                _ChessBoard[i + 4][j] == flag)\par
+                return 1;\par
+        \}\par
+        //3.\'c5\'d0\'b6\'cf\'d6\'f7\'b6\'d4\'bd\'c7\'cf\'df\'ca\'c7\'b7\'f1\'c2\'fa\'d7\'e3\'cc\'f5\'bc\'fe\par
+        int len = 0;    //\'cf\'e0\'b6\'d4\'b3\'a4\'b6\'c8\par
+        int start = 0;\par
+        int finish = 0;\par
+        pos.row > pos.col ? len = pos.col - 1 : len = pos.row - 1;\par
+        if (len > 4)\{\par
+            len = 4;\par
+        \}\par
+        begin = pos.row - len;       //\'ba\'e1\'d7\'f8\'b1\'ea\'c6\'f0\'ca\'bc\'ce\'bb\'d6\'c3\par
+        start = pos.col - len;       //\'d7\'dd\'d7\'f8\'b1\'ea\'c6\'f0\'ca\'bc\'ce\'bb\'d6\'c3\par
+\par
+        pos.row > pos.col ? len = N - pos.row : len = N - pos.col;\par
+        if (len > 4)\{\par
+            len = 4;\par
+        \}\par
+        end = pos.row + len;         //\'ba\'e1\'d7\'f8\'b1\'ea\'bd\'e1\'ca\'f8\'ce\'bb\'d6\'c3\par
+        finish = pos.col + len;      //\'d7\'dd\'d7\'f8\'b1\'ea\'bd\'e1\'ca\'f8\'ce\'bb\'d6\'c3\par
+\par
+        for (int i = begin, j = start; (i + 4 <= end) && (j + 4 <= finish); ++i, ++j)\{\par
+            if (_ChessBoard[i][j] == flag && _ChessBoard[i + 1][j + 1] == flag &&\par
+                _ChessBoard[i + 2][j + 2] == flag && _ChessBoard[i + 3][j + 3] == flag &&\par
+                _ChessBoard[i + 4][j + 4] == flag)\par
+                return 1;\par
+        \}\par
+        //4.\'c5\'d0\'b6\'cf\'b8\'b1\'b6\'d4\'bd\'c7\'cf\'df\'ca\'c7\'b7\'f1\'c2\'fa\'d7\'e3\'cc\'f5\'bc\'fe\par
+        (pos.row - 1) > (N - pos.col) ? len = N - pos.col : len = pos.row - 1;\par
+        if (len > 4)\{\par
+            len = 4;\par
+        \}\par
+        begin = pos.row - len;       //\'ba\'e1\'d7\'f8\'b1\'ea\'c6\'f0\'ca\'bc\'ce\'bb\'d6\'c3\par
+        start = pos.col + len;       //\'d7\'dd\'d7\'f8\'b1\'ea\'c6\'f0\'ca\'bc\'ce\'bb\'d6\'c3\par
+\par
+        (N - pos.row) > (pos.col - 1) ? len = pos.col - 1 : len = N - pos.row;\par
+        if (len > 4)\{\par
+            len = 4;\par
+        \}\par
+        end = pos.row + len;         //\'ba\'e1\'d7\'f8\'b1\'ea\'bd\'e1\'ca\'f8\'ce\'bb\'d6\'c3\par
+        finish = pos.col - len;      //\'d7\'dd\'d7\'f8\'b1\'ea\'bd\'e1\'ca\'f8\'ce\'bb\'d6\'c3 \par
+        for (int i = begin, j = start; (i + 4 <= end) && (j - 4 >= finish); ++i, --j)\{\par
+            if (_ChessBoard[i][j] == flag && _ChessBoard[i + 1][j - 1] == flag &&\par
+                _ChessBoard[i + 2][j - 2] == flag && _ChessBoard[i + 3][j - 3] == flag &&\par
+                _ChessBoard[i + 4][j - 4] == flag)\par
+                return 1;\par
+        \}\par
+        //\'b8\'c3\'ce\'bb\'d6\'c3\'b2\'a2\'ce\'b4\'cf\'c2\'c6\'e5\par
+        for (int x = 1; x < N + 1; ++x)\{\par
+            for (int y = 1; y < N + 1; ++y)\{\par
+                if (_ChessBoard[x][y] == ChessBoard)\{\par
+                    return 0;       //\'ce\'b4\'cf\'c2\'c6\'e5\par
+                \}\par
+            \}\par
+        \}\par
+        return -1;      //\'ba\'cd\'be\'d6\par
+    \}\par
+\par
+    bool GetVictory(Position& pos, int player, char flag)\{       //\'c5\'d0\'b6\'cf\'be\'df\'cc\'e5\'c4\'c4\'ce\'bb\'cd\'e6\'bc\'d2\'d3\'ae\par
+        if (JudgeVictory(pos, flag) != 0)\{    //\'c5\'d0\'b6\'cf\'d3\'d0\'ce\'de\'c8\'cb\'bb\'f1\'ca\'a4\par
+            if (JudgeVictory(pos, flag) == 1)\{     //\'c5\'d0\'b6\'cf\'ca\'c7\'b7\'f1\'d3\'d0\'c8\'cb\'bb\'f1\'ca\'a4,1\'b1\'ed\'ca\'be\'bb\'f1\'ca\'a4\par
+                PrintChessBoard();     //\'b4\'f2\'d3\'a1\'c6\'e5\'c5\'cc\par
+                if (player == 0)\{\par
+                    cout << "\'b5\'e7\'c4\'d4\'bb\'f1\'ca\'a4\'a3\'a1" << endl;\par
+                \}\par
+                else\{\par
+                    printf("\'b9\'a7\'cf\'b2\'cd\'e6\'bc\'d2%d\'bb\'f1\'ca\'a4\'a3\'a1\\n", player);\par
+                \}\par
+            \}\par
+            else\{\par
+                printf("\'ba\'cd\'be\'d6\'a3\'a1\\n");\par
+            \}\par
+            return true;      //\'d3\'d0\'c8\'cb\'bb\'f1\'ca\'a4\par
+        \}   \par
+        return false;         //\'c3\'bb\'c8\'cb\'bb\'f1\'ca\'a4\par
+    \}\par
+\par
+private:\par
+    char _ChessBoard[N + 1][N + 1];    //\'c6\'e5\'c5\'cc\par
+\};\par
+\par
+int main()\{\par
+    GoBang g;\par
+    g.Play();\par
+    system("pause");\par
+    return 0;\par
+\}\par
+}
+ 
